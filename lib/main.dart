@@ -1,4 +1,4 @@
-import 'package:chart_app/temperature_screen.dart';
+import 'package:chart_app/test_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
-      home: const TemperatureScreen(),
+      //home: const TemperatureScreen(),
+      home: const TestScreen(),
     );
   }
 }
