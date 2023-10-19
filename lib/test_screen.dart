@@ -19,7 +19,7 @@ class _TestScreenState extends State<TestScreen> {
   @override
   void initState() {
     //RAMDOM
-    //chartData = getChartData();
+    chartData = getChartData();
     Timer.periodic(const Duration(seconds: 1), updateDataSource);
 
     //Get data from firebass
