@@ -5,14 +5,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class TestScreen extends StatefulWidget {
-  const TestScreen({super.key});
+class TestChartFireBase extends StatefulWidget {
+  const TestChartFireBase({super.key});
 
   @override
-  State<TestScreen> createState() => _TestScreenState();
+  State<TestChartFireBase> createState() => _TestChartFireBaseState();
 }
 
-class _TestScreenState extends State<TestScreen> {
+class _TestChartFireBaseState extends State<TestChartFireBase> {
   late List<_ChartData> chartData;
   late ChartSeriesController _chartSeriesController;
 
