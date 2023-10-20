@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TestScreen extends StatefulWidget {
@@ -20,10 +21,14 @@ class _TestScreenState extends State<TestScreen> {
   void initState() {
     //RAMDOM
     chartData = getChartData();
-    Timer.periodic(const Duration(seconds: 1), updateDataSource);
+    //Timer.periodic(const Duration(seconds: 1), updateDataSource);
 
     //Get data from firebass
-
+    getDataFromFireStore().then((results) {
+      SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+        setState(() {});
+      });
+    });
     super.initState();
   }
 
@@ -47,9 +52,9 @@ class _TestScreenState extends State<TestScreen> {
               series: <ChartSeries<_ChartData, int>>[
                 LineSeries<_ChartData, int>(
                     dataSource: chartData,
-                    onRendererCreated: (ChartSeriesController controller) {
-                      _chartSeriesController = controller;
-                    },
+                    // onRendererCreated: (ChartSeriesController controller) {
+                    //   _chartSeriesController = controller;
+                    // },
                     xValueMapper: (_ChartData data, _) => data.timestamp,
                     yValueMapper: (_ChartData data, _) => data.tempdata,
                     name: 'oC',

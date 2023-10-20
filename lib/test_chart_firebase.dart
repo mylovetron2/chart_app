@@ -20,7 +20,7 @@ class _TestChartFireBaseState extends State<TestChartFireBase> {
   @override
   void initState() {
     //RAMDOM
-    //chartData = getChartData();
+    chartData = getChartData();
     //Timer.periodic(const Duration(seconds: 1), updateDataSource);
 
     //Get data from firebass
@@ -43,9 +43,10 @@ class _TestChartFireBaseState extends State<TestChartFireBase> {
         body: Column(children: [
           //Initialize the chart widget
           SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
+              primaryXAxis: NumericAxis(),
+              primaryYAxis: NumericAxis(),
               // Chart title
-              title: ChartTitle(text: 'title'),
+              title: ChartTitle(text:'title2'),
               // Enable legend
               legend: const Legend(isVisible: true),
               // Enable tooltip
@@ -91,7 +92,7 @@ class _TestChartFireBaseState extends State<TestChartFireBase> {
       _ChartData(timestamp: 15, tempdata: 92),
       _ChartData(timestamp: 16, tempdata: 86),
       _ChartData(timestamp: 17, tempdata: 72),
-      _ChartData(timestamp: 18, tempdata: 94),
+      //_ChartData(timestamp: 18, tempdata: 94),
     ];
   }
 

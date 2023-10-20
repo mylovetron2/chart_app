@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "765788376724",
+    "firebase_url": "https://temperature-app-3d881-default-rtdb.firebaseio.com",
     "project_id": "temperature-app-3d881",
     "storage_bucket": "temperature-app-3d881.appspot.com"
   },
