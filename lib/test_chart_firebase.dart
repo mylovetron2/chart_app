@@ -14,18 +14,19 @@ class TestChartFireBase extends StatefulWidget {
 }
 
 class _TestChartFireBaseState extends State<TestChartFireBase> {
-  late List<_ChartData> chartData = <_ChartData>[];
-  late ChartSeriesController _chartSeriesController;
-
+  List<_ChartData> chartData = <_ChartData>[];
+  
+  
   @override
+  
   void initState() {
     //RAMDOM
-    chartData = getChartData();
-    //Timer.periodic(const Duration(seconds: 1), updateDataSource);
+    //chartData = getChartData();
+    //Timer.periodic(const Duration(seconds: 1), getDataFromFireStore);
 
     //Get data from firebass
     getDataFromFireStore().then((results) {
-      SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
         setState(() {});
       });
     });
@@ -43,7 +44,7 @@ class _TestChartFireBaseState extends State<TestChartFireBase> {
         body: Column(children: [
           //Initialize the chart widget
           SfCartesianChart(
-              primaryXAxis: NumericAxis(),
+              primaryXAxis: DateTimeAxis(),
               primaryYAxis: NumericAxis(),
               // Chart title
               title: ChartTitle(text:'title2'),
@@ -51,8 +52,8 @@ class _TestChartFireBaseState extends State<TestChartFireBase> {
               legend: const Legend(isVisible: true),
               // Enable tooltip
               tooltipBehavior: TooltipBehavior(enable: true),
-              series: <ChartSeries<_ChartData, int>>[
-                LineSeries<_ChartData, int>(
+              series: <ChartSeries<_ChartData, DateTime>>[
+                LineSeries<_ChartData, DateTime>(
                     dataSource: chartData,
                     xValueMapper: (_ChartData data, _) => data.timestamp,
                     yValueMapper: (_ChartData data, _) => data.tempdata,
@@ -63,67 +64,27 @@ class _TestChartFireBaseState extends State<TestChartFireBase> {
         ]));
   }
 
-  int time = 19;
-  void updateDataSource(Timer timer) {
-    chartData.add(_ChartData(
-        timestamp: time++, tempdata: (math.Random().nextInt(60) + 30)));
-    chartData.removeAt(0);
-    _chartSeriesController.updateDataSource(
-        addedDataIndex: chartData.length - 1, removedDataIndex: 0);
-  }
-
-  List<_ChartData> getChartData() {
-    return <_ChartData>[
-      _ChartData(timestamp: 0, tempdata: 34),
-      _ChartData(timestamp: 1, tempdata: 47),
-      _ChartData(timestamp: 2, tempdata: 33),
-      _ChartData(timestamp: 3, tempdata: 49),
-      _ChartData(timestamp: 4, tempdata: 54),
-      _ChartData(timestamp: 5, tempdata: 41),
-      _ChartData(timestamp: 6, tempdata: 58),
-      _ChartData(timestamp: 7, tempdata: 51),
-      _ChartData(timestamp: 8, tempdata: 98),
-      _ChartData(timestamp: 9, tempdata: 41),
-      _ChartData(timestamp: 10, tempdata: 53),
-      _ChartData(timestamp: 11, tempdata: 72),
-      _ChartData(timestamp: 12, tempdata: 86),
-      _ChartData(timestamp: 13, tempdata: 52),
-      _ChartData(timestamp: 14, tempdata: 94),
-      _ChartData(timestamp: 15, tempdata: 92),
-      _ChartData(timestamp: 16, tempdata: 86),
-      _ChartData(timestamp: 17, tempdata: 72),
-      //_ChartData(timestamp: 18, tempdata: 94),
-    ];
-  }
-
   Future<void> getDataFromFireStore() async {
     var snapShotsValue =
         await FirebaseFirestore.instance.collection("chartData").get();
-    // List<_ChartData> list = snapShotsValue.docs
-    //     .map((e) => _ChartData(
-    //         x: DateTime.fromMillisecondsSinceEpoch(
-    //             e.data()['x'].millisecondsSinceEpoch),
-    //         y: e.data()['y']))
-    //     .toList();
     List<_ChartData> list = snapShotsValue.docs
-        .map((e) =>
-            _ChartData(timestamp: e.data()['x'], tempdata: e.data()['y']))
+        .map((e) => _ChartData(
+            timestamp: DateTime.fromMillisecondsSinceEpoch(
+                e.data()['timestamp'].millisecondsSinceEpoch),
+            tempdata: e.data()['tempdata']))
         .toList();
+    // List<_ChartData> list = snapShotsValue.docs
+    //     .map((e) =>
+    //         _ChartData(timestamp: e.data()['timestamp'], tempdata: e.data()['tempdata']))
+    //     .toList();
     setState(() {
       chartData = list;
     });
   }
 }
 
-class _SalesData {
-  _SalesData(this.year, this.sales);
-
-  final String year;
-  final double sales;
-}
-
 class _ChartData {
   _ChartData({this.timestamp, this.tempdata});
-  final int? timestamp;
+  final DateTime? timestamp;
   final num? tempdata;
 }

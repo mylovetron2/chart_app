@@ -1,0 +1,1 @@
+https://mecsu.vn/ho-tro-ky-thuat/esp8266-ghi-nhat-ky-du-lieu-nodemcu-vao-co-so-du-lieu-thoi-gian-thuc-firebase.RbB
