@@ -5,7 +5,8 @@
   #include <ESP8266WiFi.h>
 #endif
 #include <Firebase_ESP_Client.h>
-
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 //Provide the token generation process info.
 #include "addons/TokenHelper.h"
 //Provide the RTDB payload printing info and other helper functions.
@@ -30,6 +31,22 @@ FirebaseConfig config;
 unsigned long sendDataPrevMillis = 0;
 int count = 0;
 bool signupOK = false;
+
+int epoch_time;
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org");
+String parent_path;
+//get current epoch time
+
+unsigned long Get_Epoch_Time() {
+
+  timeClient.update();
+
+  unsigned long now = timeClient.getEpochTime();
+
+  return now;
+
+}
 
 void setup(){
   Serial.begin(115200);
@@ -64,6 +81,8 @@ void setup(){
   /* Assign the callback function for the long running token generation task */
   config.token_status_callback = tokenStatusCallback; //see addons/TokenHelper.h
   
+  timeClient.begin();
+
   Firebase.begin(&config, &auth);
   Serial.println("Getting User UID...");
 
@@ -86,8 +105,11 @@ void setup(){
 void loop(){
   if (Firebase.ready() && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0)){
     sendDataPrevMillis = millis();
+
+     epoch_time = Get_Epoch_Time();
     // Write an Int number on the database path test/int
-    if (Firebase.RTDB.setInt(&fbdo, "test/int", count)){
+    parent_path="data/" + String(epoch_time)+"/time";
+    if (Firebase.RTDB.setInt(&fbdo, parent_path, epoch_time)){
       Serial.println("PASSED");
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
@@ -96,10 +118,10 @@ void loop(){
       Serial.println("FAILED");
       Serial.println("REASON: " + fbdo.errorReason());
     }
-    count++;
     
+    parent_path="data/" + String(epoch_time)+"/temp";
     // Write an Float number on the database path test/float
-    if (Firebase.RTDB.setFloat(&fbdo, "test/float", 0.01 + random(0,100))){
+    if (Firebase.RTDB.setFloat(&fbdo, parent_path, 0.01 + random(0,100))){
       Serial.println("PASSED");
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());

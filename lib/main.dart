@@ -1,5 +1,5 @@
 import 'package:chart_app/firebase_options.dart';
-import 'package:chart_app/test_chart_firebase.dart';
+import 'package:chart_app/test_chart_firestore.dart';
 import 'package:chart_app/test_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
-      home: const TestScreen(),
-      //home: const TestChartFireBase(),
+      //home: const TestScreen(),
+      home: const TestChartFireBase2(),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:firebase_database/firebase_database.dart' ;
 
 class TestChartFireBase extends StatefulWidget {
   const TestChartFireBase({super.key});
@@ -15,6 +16,7 @@ class TestChartFireBase extends StatefulWidget {
 
 class _TestChartFireBaseState extends State<TestChartFireBase> {
   List<_ChartData> chartData = <_ChartData>[];
+  
   
   
   @override
@@ -30,6 +32,8 @@ class _TestChartFireBaseState extends State<TestChartFireBase> {
         setState(() {});
       });
     });
+
+  
 
     super.initState();
   }
@@ -81,7 +85,17 @@ class _TestChartFireBaseState extends State<TestChartFireBase> {
       chartData = list;
     });
   }
+
+  Future<void> getRealtimeFromFireStore() async {
+        
+    
+    
+  }
+
+
 }
+
+
 
 class _ChartData {
   _ChartData({this.timestamp, this.tempdata});
