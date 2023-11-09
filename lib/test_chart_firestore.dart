@@ -18,34 +18,20 @@ class _TestChartFireBase2State extends State<TestChartFireBase2> {
   List<_ChartData> chartData = <_ChartData>[];
   
   void getData() {
-    // final ref = FirebaseDatabase.instance.ref();
-    // final snapshot = await ref.child('test/bool').get();
-    // if (snapshot.exists) {
-    //     print(snapshot.value);
-    // } else {
-    //     print('No data available.');
-    // }
-    DatabaseReference starCountRef =
-      FirebaseDatabase.instance.ref('data')..limitToLast(100);
-      starCountRef.onValue.listen((DatabaseEvent event) {
-        //Map data = event.snapshot.value as Map;
-        
-        Map values = event.snapshot.value as Map;
-         chartData = values.entries.map((e) => _ChartData(
+    Query starCountRef =
+      FirebaseDatabase.instance.ref('data').limitToLast(100);
+    starCountRef.onValue.listen((DatabaseEvent event) {
+      print("test");
+      Map data = event.snapshot.value as Map;
+      chartData = data.entries.map((e) => _ChartData(
             timestamp: DateTime.fromMillisecondsSinceEpoch(
                 e.value()['time'].millisecondsSinceEpoch),
             tempdata: e.value()['temp']))
         .toList();
 
-
-        // values.forEach((key,value) {
-        //   values[key][value];
-        //   //print(values["float"]);
-        // });
-        //print(data.values.toList()[1]["float"]);
-         print(chartData);
-        //updateStarCount(data);
-      }); 
+    });
+    print(chartData);
+    
   }
   
 

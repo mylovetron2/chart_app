@@ -71,12 +71,13 @@ class _TestChartFireBaseState extends State<TestChartFireBase> {
   Future<void> getDataFromFireStore() async {
     var snapShotsValue =
         await FirebaseFirestore.instance.collection("chartData").get();
-    List<_ChartData> list = snapShotsValue.docs
-        .map((e) => _ChartData(
+    List<_ChartData> list = snapShotsValue.docs.map((e) => _ChartData(
             timestamp: DateTime.fromMillisecondsSinceEpoch(
                 e.data()['timestamp'].millisecondsSinceEpoch),
             tempdata: e.data()['tempdata']))
         .toList();
+
+    
     // List<_ChartData> list = snapShotsValue.docs
     //     .map((e) =>
     //         _ChartData(timestamp: e.data()['timestamp'], tempdata: e.data()['tempdata']))
@@ -87,7 +88,7 @@ class _TestChartFireBaseState extends State<TestChartFireBase> {
   }
 
   Future<void> getRealtimeFromFireStore() async {
-        
+       // Query starCountRef = FirebaseDatabase.instance.ref('data').limitToLast(100);
     
     
   }
